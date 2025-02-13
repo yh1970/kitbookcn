@@ -1,0 +1,49 @@
+name: Build and Release Typst PDF
+
+on:
+  push:
+    tags:
+      - "v*"  # 仅在推送标签时触发，例如 v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Typst
+        run: |
+          sudo snap install typst
+
+      - name: Compile Typst to PDF
+        run: |
+          mkdir -p output
+          typst compile main.typ output/main.pdf
+
+      - name: Upload PDF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-pdf
+          path: output/main.pdf
+
+  release:
+    permissions: write-all
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download PDF Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: compiled-pdf
+          path: output
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: output/main.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
