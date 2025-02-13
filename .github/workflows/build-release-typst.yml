@@ -19,13 +19,13 @@ jobs:
       - name: Compile Typst to PDF
         run: |
           mkdir -p output
-          typst compile main.typ output/main.pdf
+          typst compile src/kitbookcn.typ output/kitbookcn.pdf
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
         with:
           name: compiled-pdf
-          path: output/main.pdf
+          path: output/kitbookcn.pdf
 
   release:
     permissions: write-all
@@ -44,6 +44,6 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: output/main.pdf
+          files: output/kitbookcn.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
