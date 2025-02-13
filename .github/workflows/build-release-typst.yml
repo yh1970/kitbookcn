@@ -12,6 +12,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install font
+        run: |
+          sudo apt install fonts-noto-cjk fonts-noto-cjk-extra
+
       - name: Install Typst
         run: |
           sudo snap install typst
