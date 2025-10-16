@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+
+# Build and deploy the docs/ directory to GitHub Pages using the official Pages actions
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare site (copy docs -> site)
+        run: |
+          mkdir -p site
+          cp -r docs/* site/
+          # Ensure Jekyll does not process the site when deployed to Pages
+          touch site/.nojekyll
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
