@@ -11,6 +11,4 @@
 - [考试](考试.md)
 - [参考资料](References.md)
 
-要修改具体章节，请直接编辑对应的章节页面（`docs/*.md` 或 `wiki/*.md`）。
-
-提交更改并 push 到 `main` 分支后，GitHub Actions 会自动将 `docs/` 内容部署到 GitHub Pages。
+要修改具体章节，请直接编辑对应的章节页面。
